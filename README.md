@@ -1,6 +1,6 @@
 # Michael's Coloring Club
 
-A kids' coloring and badge game with 12 pictures: Rocket, Fish, House, Butterfly, Dino, Ice Cream, two Hello Kitty pages (Hello Kitty and Kitty Overalls), plus four original kitten pages (Flower Kitten, Balloon Kitten, Birthday Kitten and Sleepy Kitten).
+A kids' coloring and badge game featuring two Hello Kitty pictures: Hello Kitty and Kitty Overalls.
 
 The Hello Kitty pages are black-and-white versions of supplied pictures (`hello-kitty-lineart.png`, `hello-kitty-2-lineart.png`); their colorable areas are traced into the page.
 

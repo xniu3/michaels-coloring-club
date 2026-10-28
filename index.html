@@ -186,96 +186,6 @@ const RAINBOW = ['#ff5e5e','#ff9f1c','#ffe66d','#8ac926','#2ec4b6','#4d96ff','#a
 
 // Each picture: regions are tappable; decor is line-art on top.
 const PICTURES = [
-  { id: 'rocket', name: 'Rocket', emoji: '🚀', svg: `
-    <rect class="region" data-r="sky" x="4" y="4" width="392" height="392" rx="20"/>
-    <circle class="region" data-r="planet" cx="320" cy="90" r="45"/>
-    <ellipse class="region" data-r="ring" cx="320" cy="90" rx="70" ry="14" fill-rule="evenodd"/>
-    <polygon class="region" data-r="star1" points="70,60 78,80 100,80 82,93 89,114 70,101 51,114 58,93 40,80 62,80"/>
-    <polygon class="region" data-r="star2" points="90,300 96,314 111,314 99,323 104,338 90,329 76,338 81,323 69,314 84,314"/>
-    <polygon class="region" data-r="flame" points="170,300 230,300 215,360 200,335 185,360"/>
-    <polygon class="region" data-r="finL" points="165,220 125,290 165,290"/>
-    <polygon class="region" data-r="finR" points="235,220 275,290 235,290"/>
-    <path class="region" data-r="body" d="M165 130 Q200 60 235 130 L235 300 L165 300 Z"/>
-    <path class="region" data-r="nose" d="M172 118 Q200 50 228 118 Z"/>
-    <circle class="region" data-r="window" cx="200" cy="185" r="26"/>
-    <rect class="region" data-r="stripe" x="165" y="250" width="70" height="18"/>
-  `},
-  { id: 'fish', name: 'Fish', emoji: '🐠', svg: `
-    <rect class="region" data-r="water" x="4" y="4" width="392" height="392" rx="20"/>
-    <path class="region" data-r="sand" d="M4 330 Q100 300 200 330 T396 325 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
-    <path class="region" data-r="weed1" d="M50 335 Q30 280 60 240 Q80 280 70 335 Z"/>
-    <path class="region" data-r="weed2" d="M340 330 Q320 260 350 210 Q375 270 360 330 Z"/>
-    <polygon class="region" data-r="tail" points="270,190 340,140 330,190 340,240"/>
-    <path class="region" data-r="finTop" d="M150 130 Q200 70 250 135 Z"/>
-    <ellipse class="region" data-r="body" cx="190" cy="190" rx="95" ry="65"/>
-    <path class="region" data-r="stripe" d="M200 128 Q225 190 200 252 L230 245 Q250 190 230 135 Z"/>
-    <path class="region" data-r="finSide" d="M180 200 Q200 240 160 245 Q165 220 180 200 Z"/>
-    <circle class="region" data-r="eye" cx="135" cy="175" r="16"/>
-    <circle class="region" data-r="bub1" cx="90" cy="110" r="14"/>
-    <circle class="region" data-r="bub2" cx="70" cy="70" r="10"/>
-    <circle class="region" data-r="bub3" cx="100" cy="40" r="7"/>
-    <g class="decor"><circle cx="135" cy="175" r="6" fill="#2b2140"/><path d="M105 205 Q115 215 125 208" stroke="#2b2140" stroke-width="4" fill="none" stroke-linecap="round"/></g>
-  `},
-  { id: 'house', name: 'House', emoji: '🏡', svg: `
-    <rect class="region" data-r="sky" x="4" y="4" width="392" height="300" rx="20"/>
-    <path class="region" data-r="grass" d="M4 290 L396 290 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
-    <circle class="region" data-r="sun" cx="330" cy="70" r="38"/>
-    <path class="region" data-r="cloud" d="M60 90 Q60 60 90 65 Q105 40 130 60 Q160 55 155 85 Q160 105 130 105 L80 105 Q55 105 60 90 Z"/>
-    <rect class="region" data-r="chimney" x="215" y="95" width="28" height="60"/>
-    <polygon class="region" data-r="roof" points="90,180 180,95 270,180"/>
-    <rect class="region" data-r="wall" x="105" y="180" width="150" height="120"/>
-    <rect class="region" data-r="door" x="160" y="230" width="40" height="70" rx="6"/>
-    <rect class="region" data-r="win1" x="118" y="200" width="32" height="32"/>
-    <rect class="region" data-r="win2" x="210" y="200" width="32" height="32"/>
-    <rect class="region" data-r="trunk" x="315" y="220" width="22" height="80"/>
-    <circle class="region" data-r="leaves" cx="326" cy="195" r="45"/>
-    <path class="region" data-r="path" d="M160 300 L200 300 L230 396 L130 396 Z"/>
-    <g class="decor"><circle cx="192" cy="268" r="4" fill="#2b2140"/><line x1="134" y1="200" x2="134" y2="232" stroke="#2b2140" stroke-width="3"/><line x1="118" y1="216" x2="150" y2="216" stroke="#2b2140" stroke-width="3"/><line x1="226" y1="200" x2="226" y2="232" stroke="#2b2140" stroke-width="3"/><line x1="210" y1="216" x2="242" y2="216" stroke="#2b2140" stroke-width="3"/></g>
-  `},
-  { id: 'butterfly', name: 'Butterfly', emoji: '🦋', svg: `
-    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
-    <path class="region" data-r="wingTL" d="M195 180 Q120 40 50 90 Q20 170 195 200 Z"/>
-    <path class="region" data-r="wingTR" d="M205 180 Q280 40 350 90 Q380 170 205 200 Z"/>
-    <path class="region" data-r="wingBL" d="M195 205 Q70 210 85 300 Q130 340 195 230 Z"/>
-    <path class="region" data-r="wingBR" d="M205 205 Q330 210 315 300 Q270 340 205 230 Z"/>
-    <circle class="region" data-r="spotTL" cx="110" cy="125" r="22"/>
-    <circle class="region" data-r="spotTR" cx="290" cy="125" r="22"/>
-    <circle class="region" data-r="spotBL" cx="125" cy="270" r="15"/>
-    <circle class="region" data-r="spotBR" cx="275" cy="270" r="15"/>
-    <ellipse class="region" data-r="body" cx="200" cy="210" rx="14" ry="75"/>
-    <circle class="region" data-r="head" cx="200" cy="125" r="18"/>
-    <g class="decor" fill="none" stroke="#2b2140" stroke-width="4" stroke-linecap="round"><path d="M193 110 Q180 70 165 60"/><path d="M207 110 Q220 70 235 60"/><circle cx="165" cy="58" r="5" fill="#2b2140"/><circle cx="235" cy="58" r="5" fill="#2b2140"/><circle cx="194" cy="122" r="2.5" fill="#2b2140"/><circle cx="206" cy="122" r="2.5" fill="#2b2140"/><path d="M194 132 Q200 137 206 132"/></g>
-  `},
-  { id: 'dino', name: 'Dino', emoji: '🦕', svg: `
-    <rect class="region" data-r="sky" x="4" y="4" width="392" height="310" rx="20"/>
-    <path class="region" data-r="ground" d="M4 300 L396 300 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
-    <polygon class="region" data-r="volcano" points="280,300 330,150 360,150 396,260 396,300"/>
-    <path class="region" data-r="lava" d="M330 150 Q345 110 360 150 L355 175 Q345 160 338 178 Z"/>
-    <polygon class="region" data-r="spike1" points="145,165 160,130 175,160"/>
-    <polygon class="region" data-r="spike2" points="175,158 195,120 210,158"/>
-    <polygon class="region" data-r="spike3" points="210,160 230,128 242,168"/>
-    <rect class="region" data-r="legBack" x="215" y="250" width="30" height="55" rx="10"/>
-    <rect class="region" data-r="legFront" x="130" y="250" width="30" height="55" rx="10"/>
-    <path class="region" data-r="body" d="M90 150 Q70 120 95 100 Q130 90 135 130 Q140 160 200 155 Q270 155 300 230 Q240 220 250 260 Q200 275 140 262 Q100 250 110 200 Q112 170 90 150 Z"/>
-    <path class="region" data-r="belly" d="M140 230 Q190 250 240 235 Q220 260 180 262 Q150 258 140 230 Z"/>
-    <circle class="region" data-r="egg" cx="60" cy="285" r="18"/>
-    <g class="decor"><circle cx="105" cy="115" r="5" fill="#2b2140"/><path d="M85 135 Q95 140 105 135" stroke="#2b2140" stroke-width="3" fill="none" stroke-linecap="round"/></g>
-  `},
-  { id: 'icecream', name: 'Ice Cream', emoji: '🍦', svg: `
-    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
-    <polygon class="region" data-r="cone" points="140,215 260,215 200,380"/>
-    <circle class="region" data-r="scoop1" cx="160" cy="200" r="45"/>
-    <circle class="region" data-r="scoop2" cx="240" cy="200" r="45"/>
-    <circle class="region" data-r="scoop3" cx="200" cy="140" r="50"/>
-    <path class="region" data-r="drip" d="M120 215 Q200 240 280 215 L280 230 Q260 250 250 232 Q230 260 210 235 Q190 262 175 236 Q150 255 140 232 Q125 245 120 230 Z"/>
-    <circle class="region" data-r="cherry" cx="200" cy="75" r="18"/>
-    <rect class="region" data-r="spr1" x="180" y="120" width="16" height="6" rx="3" transform="rotate(30 188 123)"/>
-    <rect class="region" data-r="spr2" x="210" y="150" width="16" height="6" rx="3" transform="rotate(-25 218 153)"/>
-    <rect class="region" data-r="spr3" x="215" y="110" width="16" height="6" rx="3" transform="rotate(60 223 113)"/>
-    <polygon class="region" data-r="star" points="60,60 67,78 86,78 71,89 77,107 60,96 43,107 49,89 34,78 53,78"/>
-    <polygon class="region" data-r="heart" points="330,320 300,290 310,275 330,285 350,275 360,290"/>
-    <g class="decor" stroke="#2b2140" stroke-width="3" fill="none"><path d="M200 58 Q205 35 225 30"/><line x1="160" y1="250" x2="235" y2="290"/><line x1="240" y1="250" x2="170" y2="300"/></g>
-  `},
   { id: 'kitty', name: 'Hello Kitty', emoji: '🎀', svg: `
     <g transform="translate(8 8) scale(0.39)">
       <rect class="decor" x="-20" y="-20" width="1025" height="1025" fill="#fff"/>
@@ -296,98 +206,6 @@ const PICTURES = [
       <path class="region" data-r="nose" style="stroke:none" fill-rule="evenodd" d="M480 451 481 462 486 467 492 469 510 469 519 465 522 459 521 448 514 442 510 441 490 442 484 445Z"/>
       <image class="decor" href="hello-kitty-lineart.png" x="0" y="0" width="985" height="985" style="pointer-events:none"/>
     </g>
-  `},
-  { id: 'kittenFlower', name: 'Flower Kitten', emoji: '🌸', svg: `
-    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
-    <path class="region" data-r="grass" d="M4 320 Q100 290 200 315 Q300 290 396 320 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
-    <path class="region" data-r="stem" d="M306 168 L314 168 L316 330 L304 330 Z"/>
-    <ellipse class="region" data-r="leaf" cx="335" cy="250" rx="24" ry="10" transform="rotate(-30 335 250)"/>
-    <path class="region" data-r="tail" d="M215 300 Q290 300 265 220 Q262 205 275 210 Q310 300 220 320 Z"/>
-    <ellipse class="region" data-r="body" cx="170" cy="275" rx="70" ry="60"/>
-    <ellipse class="region" data-r="belly" cx="170" cy="290" rx="38" ry="35"/>
-    <ellipse class="region" data-r="pawL" cx="135" cy="332" rx="22" ry="13"/>
-    <ellipse class="region" data-r="pawR" cx="205" cy="332" rx="22" ry="13"/>
-    <polygon class="region" data-r="earL" points="114.19999999999999,143.3 123.5,81.3 157.6,112.30000000000001"/>
-    <polygon class="region" data-r="earR" points="225.8,143.3 216.5,81.3 182.4,112.30000000000001"/>
-    <polygon class="region" data-r="inL" points="125.36,130.9 126.6,98.03999999999999 146.44,115.4"/>
-    <polygon class="region" data-r="inR" points="214.64,130.9 213.4,98.03999999999999 193.56,115.4"/>
-    <ellipse class="region" data-r="head" cx="170" cy="165" rx="62" ry="52.699999999999996"/>
-    <circle class="region" data-r="cheekL" cx="135.9" cy="180.5" r="8.06"/>
-    <circle class="region" data-r="cheekR" cx="204.1" cy="180.5" r="8.06"/>
-    <circle class="region" data-r="petal0" cx="310" cy="126" r="18"/>
-    <circle class="region" data-r="petal1" cx="333" cy="143" r="18"/>
-    <circle class="region" data-r="petal2" cx="324" cy="170" r="18"/>
-    <circle class="region" data-r="petal3" cx="296" cy="170" r="18"/>
-    <circle class="region" data-r="petal4" cx="287" cy="143" r="18"/>
-    <circle class="region" data-r="center" cx="310" cy="150" r="14"/>
-    <circle class="region" data-r="sun" cx="60" cy="60" r="30"/>
-    <g class="decor" stroke="#2b2140" stroke-width="3" stroke-linecap="round"><circle cx="150.16" cy="161" r="7" fill="#2b2140"/><circle cx="189.84" cy="161" r="7" fill="#2b2140"/><circle cx="152.16" cy="158" r="2" fill="#fff" stroke="none"/><circle cx="191.84" cy="158" r="2" fill="#fff" stroke="none"/><path d="M165 175 L175 175 L170 181 Z" fill="#2b2140"/><path d="M161 186 Q166 192 170 185 Q174 192 179 186" fill="none"/><line x1="142.1" y1="177" x2="98.7" y2="171"/><line x1="197.9" y1="177" x2="241.3" y2="171"/><line x1="142.1" y1="187" x2="98.7" y2="191"/><line x1="197.9" y1="187" x2="241.3" y2="191"/></g>
-  `},
-  { id: 'kittenBalloon', name: 'Balloon Kitten', emoji: '🎈', svg: `
-    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
-    <path class="region" data-r="cloud" d="M40 110 Q40 80 70 85 Q80 60 110 72 Q135 65 140 92 Q165 95 158 115 Z"/>
-    <path class="region" data-r="cloud2" d="M250 330 Q250 305 275 310 Q288 290 312 302 Q340 298 340 322 Q362 326 356 345 L250 345 Z"/>
-    <ellipse class="region" data-r="balloon" cx="300" cy="110" rx="52" ry="62"/>
-    <polygon class="region" data-r="knot" points="300,170 290,184 310,184"/>
-    <g class="decor" stroke="#2b2140" stroke-width="3" fill="none"><path d="M300 184 Q280 220 300 245 Q315 265 238 280"/><path d="M275 80 Q282 68 295 66"/></g>
-    <ellipse class="region" data-r="body" cx="170" cy="300" rx="62" ry="62"/>
-    <ellipse class="region" data-r="pawUp" cx="235" cy="280" rx="18" ry="14"/>
-    <ellipse class="region" data-r="footL" cx="135" cy="358" rx="24" ry="14"/>
-    <ellipse class="region" data-r="footR" cx="205" cy="358" rx="24" ry="14"/>
-    <polygon class="region" data-r="earL" points="114.19999999999999,168.3 123.5,106.3 157.6,137.3"/>
-    <polygon class="region" data-r="earR" points="225.8,168.3 216.5,106.3 182.4,137.3"/>
-    <polygon class="region" data-r="inL" points="125.36,155.9 126.6,123.03999999999999 146.44,140.4"/>
-    <polygon class="region" data-r="inR" points="214.64,155.9 213.4,123.03999999999999 193.56,140.4"/>
-    <ellipse class="region" data-r="head" cx="170" cy="190" rx="62" ry="52.699999999999996"/>
-    <circle class="region" data-r="cheekL" cx="135.9" cy="205.5" r="8.06"/>
-    <circle class="region" data-r="cheekR" cx="204.1" cy="205.5" r="8.06"/>
-    <g class="decor" stroke="#2b2140" stroke-width="3" stroke-linecap="round"><circle cx="150.16" cy="186" r="7" fill="#2b2140"/><circle cx="189.84" cy="186" r="7" fill="#2b2140"/><circle cx="152.16" cy="183" r="2" fill="#fff" stroke="none"/><circle cx="191.84" cy="183" r="2" fill="#fff" stroke="none"/><path d="M165 200 L175 200 L170 206 Z" fill="#2b2140"/><path d="M161 211 Q166 217 170 210 Q174 217 179 211" fill="none"/><line x1="142.1" y1="202" x2="98.7" y2="196"/><line x1="197.9" y1="202" x2="241.3" y2="196"/><line x1="142.1" y1="212" x2="98.7" y2="216"/><line x1="197.9" y1="212" x2="241.3" y2="216"/></g>
-  `},
-  { id: 'kittenCake', name: 'Birthday Kitten', emoji: '🎂', svg: `
-    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
-    <rect class="region" data-r="table" x="20" y="340" width="360" height="40" rx="10"/>
-    <rect class="region" data-r="cakeBottom" x="210" y="270" width="150" height="70" rx="10"/>
-    <rect class="region" data-r="cakeTop" x="230" y="215" width="110" height="55" rx="10"/>
-    <path class="region" data-r="icing" d="M230 228 L340 228 L340 238 Q330 252 320 238 Q305 255 292 238 Q278 255 265 238 Q250 255 240 238 L230 238 Z"/>
-    <rect class="region" data-r="candle" x="278" y="165" width="14" height="50" rx="4"/>
-    <path class="region" data-r="flame" d="M285 130 Q300 150 285 163 Q270 150 285 130 Z"/>
-    <ellipse class="region" data-r="body" cx="120" cy="290" rx="65" ry="55"/>
-    <polygon class="region" data-r="earL" points="64.19999999999999,158.3 73.5,96.3 107.6,127.30000000000001"/>
-    <polygon class="region" data-r="earR" points="175.8,158.3 166.5,96.3 132.4,127.30000000000001"/>
-    <polygon class="region" data-r="inL" points="75.36,145.9 76.6,113.03999999999999 96.44,130.4"/>
-    <polygon class="region" data-r="inR" points="164.64,145.9 163.4,113.03999999999999 143.56,130.4"/>
-    <ellipse class="region" data-r="head" cx="120" cy="180" rx="62" ry="52.699999999999996"/>
-    <circle class="region" data-r="cheekL" cx="85.9" cy="195.5" r="8.06"/>
-    <circle class="region" data-r="cheekR" cx="154.1" cy="195.5" r="8.06"/>
-    <polygon class="region" data-r="hat" points="95,130 145,130 120,55"/>
-    <circle class="region" data-r="pompom" cx="120" cy="55" r="11"/>
-    <polygon class="region" data-r="star1" points="50,40 55,53 69,54 59,63 62,76 50,69 38,76 41,63 31,54 45,53"/>
-    <polygon class="region" data-r="star2" points="350,52 355,63 367,64 358,73 361,85 350,78 339,85 342,73 333,64 345,63"/>
-    <g class="decor" stroke="#2b2140" stroke-width="3" stroke-linecap="round"><circle cx="100.16" cy="176" r="7" fill="#2b2140"/><circle cx="139.84" cy="176" r="7" fill="#2b2140"/><circle cx="102.16" cy="173" r="2" fill="#fff" stroke="none"/><circle cx="141.84" cy="173" r="2" fill="#fff" stroke="none"/><path d="M115 190 L125 190 L120 196 Z" fill="#2b2140"/><path d="M111 201 Q116 207 120 200 Q124 207 129 201" fill="none"/><line x1="92.1" y1="192" x2="48.7" y2="186"/><line x1="147.9" y1="192" x2="191.3" y2="186"/><line x1="92.1" y1="202" x2="48.7" y2="206"/><line x1="147.9" y1="202" x2="191.3" y2="206"/></g>
-  `},
-  { id: 'kittenSleepy', name: 'Sleepy Kitten', emoji: '🌙', svg: `
-    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
-    <path class="region" data-r="moon" d="M330 40 A50 50 0 1 0 360 120 A40 40 0 1 1 330 40 Z"/>
-    <polygon class="region" data-r="star1" points="70,42 75,53 87,54 78,63 81,75 70,68 59,75 62,63 53,54 65,53"/>
-    <polygon class="region" data-r="star2" points="160,32 163,40 172,41 166,47 168,56 160,51 152,56 154,47 148,41 157,40"/>
-    <polygon class="region" data-r="star3" points="240,75 244,85 254,85 246,92 249,102 240,97 231,102 234,92 226,85 236,85"/>
-    <rect class="region" data-r="bed" x="30" y="250" width="340" height="110" rx="30"/>
-    <ellipse class="region" data-r="pillow" cx="120" cy="245" rx="85" ry="35"/>
-    <path class="region" data-r="tail" d="M330 250 Q370 200 340 180 Q330 175 335 190 Q350 215 315 245 Z"/>
-    <ellipse class="region" data-r="body" cx="250" cy="250" rx="85" ry="40"/>
-    <polygon class="region" data-r="earL" points="90.5,180.75 98.75,125.75 129.0,153.25"/>
-    <polygon class="region" data-r="earR" points="189.5,180.75 181.25,125.75 151.0,153.25"/>
-    <polygon class="region" data-r="inL" points="100.4,169.75 101.5,140.6 119.1,156.0"/>
-    <polygon class="region" data-r="inR" points="179.6,169.75 178.5,140.6 160.9,156.0"/>
-    <ellipse class="region" data-r="head" cx="140" cy="200" rx="55" ry="46.75"/>
-    <circle class="region" data-r="cheekL" cx="109.75" cy="213.75" r="7.15"/>
-    <circle class="region" data-r="cheekR" cx="170.25" cy="213.75" r="7.15"/>
-    <path class="region" data-r="blanket" d="M150 270 Q260 240 370 270 L370 330 Q370 360 340 360 L170 360 Q150 360 150 330 Z"/>
-    <circle class="region" data-r="dot1" cx="210" cy="310" r="10"/>
-    <circle class="region" data-r="dot2" cx="270" cy="300" r="10"/>
-    <circle class="region" data-r="dot3" cx="330" cy="315" r="10"/>
-    <g class="decor" stroke="#2b2140" stroke-width="3" stroke-linecap="round"><path d="M112.4 196 Q122.4 206 132.4 196" fill="none"/><path d="M147.6 196 Q157.6 206 167.6 196" fill="none"/><path d="M135 210 L145 210 L140 216 Z" fill="#2b2140"/><path d="M131 221 Q136 227 140 220 Q144 227 149 221" fill="none"/><line x1="115.25" y1="212" x2="76.75" y2="206"/><line x1="164.75" y1="212" x2="203.25" y2="206"/><line x1="115.25" y1="222" x2="76.75" y2="226"/><line x1="164.75" y1="222" x2="203.25" y2="226"/></g>
-    <g class="decor" fill="#2b2140" font-family="sans-serif" font-weight="900"><text x="200" y="150" font-size="26">z</text><text x="225" y="125" font-size="20">z</text><text x="245" y="105" font-size="15">z</text></g>
   `},
   { id: 'kitty2', name: 'Kitty Overalls', emoji: '🌟', svg: `
     <g transform="translate(8 8) scale(0.39)">
@@ -424,18 +242,7 @@ const BADGES = [
   { id: 'oopsFixer', icon: '🧽', name: 'Oops Fixer', desc: 'Use the Eraser or Undo' },
   { id: 'finisher', icon: '🖼️', name: 'Artist', desc: 'Finish a whole picture' },
   { id: 'speedy', icon: '⚡', name: 'Speedy Painter', desc: 'Finish a picture in under 90 seconds' },
-  { id: 'collector', icon: '📚', name: 'Book Worm', desc: 'Finish 3 different pictures' },
-  { id: 'rocket', icon: '🚀', name: 'Space Cadet', desc: 'Finish the Rocket' },
-  { id: 'fish', icon: '🐠', name: 'Ocean Buddy', desc: 'Finish the Fish' },
-  { id: 'house', icon: '🏡', name: 'Home Builder', desc: 'Finish the House' },
-  { id: 'butterfly', icon: '🦋', name: 'Wing Wonder', desc: 'Finish the Butterfly' },
-  { id: 'dino', icon: '🦖', name: 'Dino Tamer', desc: 'Finish the Dino' },
-  { id: 'icecream', icon: '🍦', name: 'Sweet Treat', desc: 'Finish the Ice Cream' },
   { id: 'kitty', icon: '🎀', name: 'Kitty Cuddler', desc: 'Finish Hello Kitty' },
-  { id: 'kittenFlower', icon: '🌸', name: 'Flower Friend', desc: 'Finish the Flower Kitten' },
-  { id: 'kittenBalloon', icon: '🎈', name: 'Up, Up & Away', desc: 'Finish the Balloon Kitten' },
-  { id: 'kittenCake', icon: '🎂', name: 'Party Kitty', desc: 'Finish the Birthday Kitten' },
-  { id: 'kittenSleepy', icon: '🌙', name: 'Sweet Dreams', desc: 'Finish the Sleepy Kitten' },
   { id: 'kitty2', icon: '🌟', name: 'Overall Star', desc: 'Finish Kitty Overalls' },
   { id: 'champion', icon: '👑', name: 'Coloring Champion', desc: 'Finish every picture!' },
 ];
@@ -448,7 +255,8 @@ const saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
 const state = {
   color: COLORS[0].hex,
   tool: 'fill',
-  picIndex: saved.picIndex || 0,
+  picIndex: saved.pictureSetVersion === 2 ? Math.min(saved.picIndex || 0, PICTURES.length - 1) : (saved.picIndex === 11 ? 1 : 0),
+  pictureSetVersion: 2,
   fills: saved.fills || {},          // { picId: { regionId: color } }
   badges: saved.badges || {},        // { badgeId: true }
   stars: saved.stars || 0,
@@ -700,7 +508,8 @@ function runToasts() {
   setTimeout(() => { $('#toast').classList.remove('show'); setTimeout(() => { toastBusy = false; runToasts(); }, 400); }, 2200);
 }
 function updateBadgeCount() {
-  $('#badgeCount').textContent = Object.keys(state.badges).length;
+  const earned = BADGES.filter(b => state.badges[b.id]).length;
+  $('#badgeCount').textContent = earned;
   $('#badgeTotal').textContent = BADGES.length;
 }
 function renderBadgeShelf() {
@@ -711,7 +520,7 @@ function renderBadgeShelf() {
       <div class="name">${b.name}</div>
       <div class="desc">${b.desc}</div>
     </div>`).join('');
-  const n = Object.keys(state.badges).length;
+  const n = BADGES.filter(b => state.badges[b.id]).length;
   $('#badgeSummary').innerHTML = `<b style="font-size:18px">${n} of ${BADGES.length} badges • ${state.stars} ⭐</b>`;
 }
 $('#openBadges').onclick = () => { renderBadgeShelf(); $('#badgeModal').classList.add('show'); sfx.pick(); };
