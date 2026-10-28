@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Michael's Coloring Club</title>
+<style>
+  :root {
+    --ink: #2b2140;
+    --bg1: #ffe9f3;
+    --bg2: #e3f4ff;
+    --panel: #ffffff;
+    --accent: #ff6fb1;
+    --accent2: #6c5ce7;
+    --gold: #ffc93c;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Baloo 2", "Trebuchet MS", sans-serif;
+    color: var(--ink);
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    overflow: hidden;
+    user-select: none;
+  }
+  .app { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; gap: 8px; padding: 8px; }
+
+  /* Header */
+  header { display: flex; align-items: center; gap: 10px; background: var(--panel); border-radius: 22px; padding: 8px 14px; box-shadow: 0 4px 0 #0001; }
+  .logo { font-size: clamp(18px, 3vw, 28px); font-weight: 900; letter-spacing: .5px; }
+  .logo span:nth-child(1){color:#ff5e5e}.logo span:nth-child(2){color:#ff9f1c}.logo span:nth-child(3){color:#2ec4b6}.logo span:nth-child(4){color:#6c5ce7}
+  .spacer { flex: 1; }
+  .pill { display: flex; align-items: center; gap: 6px; background: #fff6d6; border: 3px solid var(--gold); border-radius: 999px; padding: 4px 12px; font-weight: 900; font-size: 18px; }
+  .btn { border: none; cursor: pointer; font-family: inherit; font-weight: 900; font-size: 18px; border-radius: 18px; padding: 10px 14px; background: var(--accent2); color: white; box-shadow: 0 5px 0 #4b3bb3; transition: transform .08s; }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #4b3bb3; }
+  .btn.pink { background: var(--accent); box-shadow: 0 5px 0 #d14b8f; }
+  .btn.gold { background: var(--gold); color: var(--ink); box-shadow: 0 5px 0 #d9a21d; }
+
+  /* Main */
+  main { display: grid; grid-template-columns: 110px 1fr 110px; gap: 8px; min-height: 0; }
+  .side { background: var(--panel); border-radius: 22px; padding: 10px 8px; display: flex; flex-direction: column; gap: 10px; align-items: center; overflow-y: auto; box-shadow: 0 4px 0 #0001; }
+  .side h3 { margin: 0; font-size: 15px; text-align: center; }
+  .canvasWrap { position: relative; background: var(--panel); border-radius: 26px; box-shadow: 0 4px 0 #0001; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 10px; }
+  #picture { width: 100%; height: 100%; max-height: 100%; }
+  #picture .region { cursor: pointer; transition: fill .25s; stroke: #2b2140; stroke-width: 4; stroke-linejoin: round; }
+  #picture .region:hover { filter: brightness(.96); }
+  #picture .decor { pointer-events: none; }
+  .pop { animation: pop .35s ease; transform-box: fill-box; transform-origin: center; }
+  @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.08)} 100%{transform:scale(1)} }
+  .progress { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: #fff; border: 3px solid #eee; border-radius: 999px; width: min(60%, 340px); height: 22px; overflow: hidden; }
+  .progress > div { height: 100%; width: 0; background: linear-gradient(90deg,#ff5e5e,#ff9f1c,#ffe66d,#2ec4b6,#6c5ce7); transition: width .3s; }
+  .progress-label { position: absolute; top: 38px; left: 50%; transform: translateX(-50%); font-weight: 900; font-size: 14px; color: #8a7fa5; }
+  .mascot { position: absolute; bottom: 10px; left: 14px; font-size: 44px; animation: bob 2s infinite ease-in-out; }
+  .bubble { position: absolute; bottom: 62px; left: 14px; background: #fff; border: 3px solid var(--accent2); border-radius: 18px; padding: 6px 12px; font-weight: 900; max-width: 260px; font-size: 16px; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  /* Tools */
+  .tool { width: 84px; height: 72px; border-radius: 18px; border: 4px solid transparent; background: #f3efff; cursor: pointer; font-family: inherit; font-weight: 900; font-size: 13px; color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .tool .ic { font-size: 28px; }
+  .tool.active { border-color: var(--accent2); background: #e4dcff; transform: scale(1.05); }
+  .tool:active { transform: scale(.95); }
+
+  /* Pictures */
+  .thumb { width: 84px; height: 84px; border-radius: 18px; border: 4px solid #eee; background: #fff; cursor: pointer; padding: 4px; position: relative; }
+  .thumb.active { border-color: var(--accent); }
+  .thumb svg { width: 100%; height: 100%; }
+  .thumb .done { position: absolute; top: -8px; right: -8px; font-size: 22px; }
+
+  /* Palette */
+  footer { background: var(--panel); border-radius: 22px; padding: 10px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #0001; }
+  .current { width: 70px; height: 70px; border-radius: 50%; border: 5px solid var(--ink); flex: none; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: inset 0 -6px 0 #0002; }
+  .palette { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; justify-content: center; }
+  .swatch { width: 54px; height: 54px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 0 3px #ddd, inset 0 -6px 0 #0002; cursor: pointer; transition: transform .12s; position: relative; }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch.active { transform: scale(1.22); box-shadow: 0 0 0 4px var(--ink), inset 0 -6px 0 #0002; z-index: 1; }
+  .swatch .key { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #a59cbc; font-weight: 900; }
+  .swatch.rainbow { background: conic-gradient(#ff5e5e,#ff9f1c,#ffe66d,#2ec4b6,#4d96ff,#a66cff,#ff5e5e); }
+
+  /* Modal */
+  .modal { position: fixed; inset: 0; background: #2b214099; display: none; align-items: center; justify-content: center; z-index: 50; }
+  .modal.show { display: flex; }
+  .card { background: #fff; border-radius: 30px; padding: 22px; width: min(92vw, 720px); max-height: 88vh; overflow-y: auto; text-align: center; box-shadow: 0 10px 0 #0003; animation: drop .4s ease; }
+  @keyframes drop { from { transform: translateY(-40px) scale(.9); opacity: 0 } to { transform: none; opacity: 1 } }
+  .card h2 { margin: 0 0 8px; font-size: 30px; }
+  .badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin: 14px 0; }
+  .badge { border-radius: 22px; padding: 12px 8px; background: #f4f4f4; filter: grayscale(1); opacity: .55; }
+  .badge.earned { background: linear-gradient(160deg,#fff6d6,#ffe1f0); filter: none; opacity: 1; border: 3px solid var(--gold); }
+  .badge .medal { font-size: 46px; }
+  .badge .name { font-weight: 900; font-size: 15px; }
+  .badge .desc { font-size: 12px; color: #7a7090; }
+  .bigBadge { font-size: 110px; animation: spin 1s ease; display: inline-block; }
+  @keyframes spin { from { transform: rotate(-200deg) scale(0) } to { transform: none } }
+
+  .toast { position: fixed; top: 16px; right: 16px; background: #fff; border: 4px solid var(--gold); border-radius: 20px; padding: 10px 16px; font-weight: 900; z-index: 60; display: flex; gap: 10px; align-items: center; transform: translateX(140%); transition: transform .35s; }
+  .toast.show { transform: none; }
+  .toast .medal { font-size: 36px; }
+
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 70; }
+
+  @media (max-width: 760px) {
+    main { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+    .side { flex-direction: row; overflow-x: auto; padding: 6px; }
+    .side h3 { display: none; }
+    .tool, .thumb { width: 64px; height: 60px; flex: none; }
+    .swatch { width: 40px; height: 40px; }
+    .current { width: 50px; height: 50px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo"><span>Michael's</span> <span>Coloring</span> <span>Club</span> <span>??</span></div>
+    <div class="spacer"></div>
+    <div class="pill" title="Stars">? <span id="stars">0</span></div>
+    <div class="pill" title="Badges">?? <span id="badgeCount">0</span>/<span id="badgeTotal">0</span></div>
+    <button class="btn gold" id="openBadges">?? Badges</button>
+    <button class="btn pink" id="soundBtn" aria-label="Toggle sound">??</button>
+  </header>
+
+  <main>
+    <aside class="side" id="pictureList"><h3>Pictures</h3></aside>
+    <section class="canvasWrap">
+      <div class="progress"><div id="progressBar"></div></div>
+      <div class="progress-label" id="progressLabel">0%</div>
+      <svg id="picture" viewBox="0 0 400 400" aria-label="Coloring picture"></svg>
+      <div class="bubble" id="bubble">Pick a color, then tap the picture!</div>
+      <div class="mascot" id="mascot">??</div>
+    </section>
+    <aside class="side">
+      <h3>Tools</h3>
+      <button class="tool active" data-tool="fill"><span class="ic">??</span>Fill</button>
+      <button class="tool" data-tool="rainbow"><span class="ic">??</span>Rainbow</button>
+      <button class="tool" data-tool="eraser"><span class="ic">??</span>Eraser</button>
+      <button class="tool" id="undoBtn"><span class="ic">??</span>Undo</button>
+      <button class="tool" id="magicBtn"><span class="ic">?</span>Magic</button>
+      <button class="tool" id="clearBtn"><span class="ic">???</span>Start Over</button>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="current" id="current"></div>
+    <div class="palette" id="palette"></div>
+  </footer>
+</div>
+
+<div class="modal" id="badgeModal">
+  <div class="card">
+    <h2>?? My Badge Shelf</h2>
+    <div id="badgeSummary"></div>
+    <div class="badges" id="badgeGrid"></div>
+    <button class="btn" data-close>Keep Coloring!</button>
+  </div>
+</div>
+
+<div class="modal" id="winModal">
+  <div class="card">
+    <div class="bigBadge" id="winIcon">??</div>
+    <h2 id="winTitle">You did it!</h2>
+    <p id="winText" style="font-size:18px;font-weight:900"></p>
+    <button class="btn pink" id="nextPicBtn">Next Picture ??</button>
+    <button class="btn" data-close>Admire My Art</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="medal" id="toastIcon">??</span><div><div style="font-size:13px;color:#a08c3c">NEW BADGE!</div><div id="toastText"></div></div></div>
+<canvas id="confetti"></canvas>
+
+<script>
+// ---------- Data ----------
+const COLORS = [
+  { name: 'Cherry Red', hex: '#ff5e5e' },
+  { name: 'Orange Pop', hex: '#ff9f1c' },
+  { name: 'Sunny Yellow', hex: '#ffe66d' },
+  { name: 'Lime Green', hex: '#8ac926' },
+  { name: 'Forest Green', hex: '#2a9d4b' },
+  { name: 'Ocean Teal', hex: '#2ec4b6' },
+  { name: 'Sky Blue', hex: '#4d96ff' },
+  { name: 'Grape Purple', hex: '#a66cff' },
+  { name: 'Bubblegum Pink', hex: '#ff8fc7' },
+  { name: 'Chocolate', hex: '#8d5a3b' },
+  { name: 'Cloud White', hex: '#ffffff' },
+  { name: 'Night Black', hex: '#3a3a4a' },
+];
+const RAINBOW = ['#ff5e5e','#ff9f1c','#ffe66d','#8ac926','#2ec4b6','#4d96ff','#a66cff','#ff8fc7'];
+
+// Each picture: regions are tappable; decor is line-art on top.
+const PICTURES = [
+  { id: 'rocket', name: 'Rocket', emoji: '??', svg: `
+    <rect class="region" data-r="sky" x="4" y="4" width="392" height="392" rx="20"/>
+    <circle class="region" data-r="planet" cx="320" cy="90" r="45"/>
+    <ellipse class="region" data-r="ring" cx="320" cy="90" rx="70" ry="14" fill-rule="evenodd"/>
+    <polygon class="region" data-r="star1" points="70,60 78,80 100,80 82,93 89,114 70,101 51,114 58,93 40,80 62,80"/>
+    <polygon class="region" data-r="star2" points="90,300 96,314 111,314 99,323 104,338 90,329 76,338 81,323 69,314 84,314"/>
+    <polygon class="region" data-r="flame" points="170,300 230,300 215,360 200,335 185,360"/>
+    <polygon class="region" data-r="finL" points="165,220 125,290 165,290"/>
+    <polygon class="region" data-r="finR" points="235,220 275,290 235,290"/>
+    <path class="region" data-r="body" d="M165 130 Q200 60 235 130 L235 300 L165 300 Z"/>
+    <path class="region" data-r="nose" d="M172 118 Q200 50 228 118 Z"/>
+    <circle class="region" data-r="window" cx="200" cy="185" r="26"/>
+    <rect class="region" data-r="stripe" x="165" y="250" width="70" height="18"/>
+  `},
+  { id: 'fish', name: 'Fish', emoji: '??', svg: `
+    <rect class="region" data-r="water" x="4" y="4" width="392" height="392" rx="20"/>
+    <path class="region" data-r="sand" d="M4 330 Q100 300 200 330 T396 325 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
+    <path class="region" data-r="weed1" d="M50 335 Q30 280 60 240 Q80 280 70 335 Z"/>
+    <path class="region" data-r="weed2" d="M340 330 Q320 260 350 210 Q375 270 360 330 Z"/>
+    <polygon class="region" data-r="tail" points="270,190 340,140 330,190 340,240"/>
+    <path class="region" data-r="finTop" d="M150 130 Q200 70 250 135 Z"/>
+    <ellipse class="region" data-r="body" cx="190" cy="190" rx="95" ry="65"/>
+    <path class="region" data-r="stripe" d="M200 128 Q225 190 200 252 L230 245 Q250 190 230 135 Z"/>
+    <path class="region" data-r="finSide" d="M180 200 Q200 240 160 245 Q165 220 180 200 Z"/>
+    <circle class="region" data-r="eye" cx="135" cy="175" r="16"/>
+    <circle class="region" data-r="bub1" cx="90" cy="110" r="14"/>
+    <circle class="region" data-r="bub2" cx="70" cy="70" r="10"/>
+    <circle class="region" data-r="bub3" cx="100" cy="40" r="7"/>
+    <g class="decor"><circle cx="135" cy="175" r="6" fill="#2b2140"/><path d="M105 205 Q115 215 125 208" stroke="#2b2140" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+  `},
+  { id: 'house', name: 'House', emoji: '??', svg: `
+    <rect class="region" data-r="sky" x="4" y="4" width="392" height="300" rx="20"/>
+    <path class="region" data-r="grass" d="M4 290 L396 290 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
+    <circle class="region" data-r="sun" cx="330" cy="70" r="38"/>
+    <path class="region" data-r="cloud" d="M60 90 Q60 60 90 65 Q105 40 130 60 Q160 55 155 85 Q160 105 130 105 L80 105 Q55 105 60 90 Z"/>
+    <rect class="region" data-r="chimney" x="215" y="95" width="28" height="60"/>
+    <polygon class="region" data-r="roof" points="90,180 180,95 270,180"/>
+    <rect class="region" data-r="wall" x="105" y="180" width="150" height="120"/>
+    <rect class="region" data-r="door" x="160" y="230" width="40" height="70" rx="6"/>
+    <rect class="region" data-r="win1" x="118" y="200" width="32" height="32"/>
+    <rect class="region" data-r="win2" x="210" y="200" width="32" height="32"/>
+    <rect class="region" data-r="trunk" x="315" y="220" width="22" height="80"/>
+    <circle class="region" data-r="leaves" cx="326" cy="195" r="45"/>
+    <path class="region" data-r="path" d="M160 300 L200 300 L230 396 L130 396 Z"/>
+    <g class="decor"><circle cx="192" cy="268" r="4" fill="#2b2140"/><line x1="134" y1="200" x2="134" y2="232" stroke="#2b2140" stroke-width="3"/><line x1="118" y1="216" x2="150" y2="216" stroke="#2b2140" stroke-width="3"/><line x1="226" y1="200" x2="226" y2="232" stroke="#2b2140" stroke-width="3"/><line x1="210" y1="216" x2="242" y2="216" stroke="#2b2140" stroke-width="3"/></g>
+  `},
+  { id: 'butterfly', name: 'Butterfly', emoji: '??', svg: `
+    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
+    <path class="region" data-r="wingTL" d="M195 180 Q120 40 50 90 Q20 170 195 200 Z"/>
+    <path class="region" data-r="wingTR" d="M205 180 Q280 40 350 90 Q380 170 205 200 Z"/>
+    <path class="region" data-r="wingBL" d="M195 205 Q70 210 85 300 Q130 340 195 230 Z"/>
+    <path class="region" data-r="wingBR" d="M205 205 Q330 210 315 300 Q270 340 205 230 Z"/>
+    <circle class="region" data-r="spotTL" cx="110" cy="125" r="22"/>
+    <circle class="region" data-r="spotTR" cx="290" cy="125" r="22"/>
+    <circle class="region" data-r="spotBL" cx="125" cy="270" r="15"/>
+    <circle class="region" data-r="spotBR" cx="275" cy="270" r="15"/>
+    <ellipse class="region" data-r="body" cx="200" cy="210" rx="14" ry="75"/>
+    <circle class="region" data-r="head" cx="200" cy="125" r="18"/>
+    <g class="decor" fill="none" stroke="#2b2140" stroke-width="4" stroke-linecap="round"><path d="M193 110 Q180 70 165 60"/><path d="M207 110 Q220 70 235 60"/><circle cx="165" cy="58" r="5" fill="#2b2140"/><circle cx="235" cy="58" r="5" fill="#2b2140"/><circle cx="194" cy="122" r="2.5" fill="#2b2140"/><circle cx="206" cy="122" r="2.5" fill="#2b2140"/><path d="M194 132 Q200 137 206 132"/></g>
+  `},
+  { id: 'dino', name: 'Dino', emoji: '??', svg: `
+    <rect class="region" data-r="sky" x="4" y="4" width="392" height="310" rx="20"/>
+    <path class="region" data-r="ground" d="M4 300 L396 300 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
+    <polygon class="region" data-r="volcano" points="280,300 330,150 360,150 396,260 396,300"/>
+    <path class="region" data-r="lava" d="M330 150 Q345 110 360 150 L355 175 Q345 160 338 178 Z"/>
+    <polygon class="region" data-r="spike1" points="145,165 160,130 175,160"/>
+    <polygon class="region" data-r="spike2" points="175,158 195,120 210,158"/>
+    <polygon class="region" data-r="spike3" points="210,160 230,128 242,168"/>
+    <rect class="region" data-r="legBack" x="215" y="250" width="30" height="55" rx="10"/>
+    <rect class="region" data-r="legFront" x="130" y="250" width="30" height="55" rx="10"/>
+    <path class="region" data-r="body" d="M90 150 Q70 120 95 100 Q130 90 135 130 Q140 160 200 155 Q270 155 300 230 Q240 220 250 260 Q200 275 140 262 Q100 250 110 200 Q112 170 90 150 Z"/>
+    <path class="region" data-r="belly" d="M140 230 Q190 250 240 235 Q220 260 180 262 Q150 258 140 230 Z"/>
+    <circle class="region" data-r="egg" cx="60" cy="285" r="18"/>
+    <g class="decor"><circle cx="105" cy="115" r="5" fill="#2b2140"/><path d="M85 135 Q95 140 105 135" stroke="#2b2140" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+  `},
+  { id: 'icecream', name: 'Ice Cream', emoji: '??', svg: `
+    <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
+    <polygon class="region" data-r="cone" points="140,215 260,215 200,380"/>
+    <circle class="region" data-r="scoop1" cx="160" cy="200" r="45"/>
+    <circle class="region" data-r="scoop2" cx="240" cy="200" r="45"/>
+    <circle class="region" data-r="scoop3" cx="200" cy="140" r="50"/>
+    <path class="region" data-r="drip" d="M120 215 Q200 240 280 215 L280 230 Q260 250 250 232 Q230 260 210 235 Q190 262 175 236 Q150 255 140 232 Q125 245 120 230 Z"/>
+    <circle class="region" data-r="cherry" cx="200" cy="75" r="18"/>
+    <rect class="region" data-r="spr1" x="180" y="120" width="16" height="6" rx="3" transform="rotate(30 188 123)"/>
+    <rect class="region" data-r="spr2" x="210" y="150" width="16" height="6" rx="3" transform="rotate(-25 218 153)"/>
+    <rect class="region" data-r="spr3" x="215" y="110" width="16" height="6" rx="3" transform="rotate(60 223 113)"/>
+    <polygon class="region" data-r="star" points="60,60 67,78 86,78 71,89 77,107 60,96 43,107 49,89 34,78 53,78"/>
+    <polygon class="region" data-r="heart" points="330,320 300,290 310,275 330,285 350,275 360,290"/>
+    <g class="decor" stroke="#2b2140" stroke-width="3" fill="none"><path d="M200 58 Q205 35 225 30"/><line x1="160" y1="250" x2="235" y2="290"/><line x1="240" y1="250" x2="170" y2="300"/></g>
+  `},
+];
+
+const BADGES = [
+  { id: 'firstSplash', icon: '??', name: 'First Splash', desc: 'Color your very first spot' },
+  { id: 'paintParty', icon: '??', name: 'Paint Party', desc: 'Fill 25 spots' },
+  { id: 'colorWizard', icon: '??', name: 'Color Wizard', desc: 'Fill 100 spots' },
+  { id: 'rainbowMaker', icon: '??', name: 'Rainbow Maker', desc: 'Use 6 colors on one picture' },
+  { id: 'explorer', icon: '??', name: 'Color Explorer', desc: 'Try every crayon in the box' },
+  { id: 'rainbowBrush', icon: '??', name: 'Unicorn Brush', desc: 'Use the Rainbow tool' },
+  { id: 'oopsFixer', icon: '??', name: 'Oops Fixer', desc: 'Use the Eraser or Undo' },
+  { id: 'finisher', icon: '???', name: 'Artist', desc: 'Finish a whole picture' },
+  { id: 'speedy', icon: '?', name: 'Speedy Painter', desc: 'Finish a picture in under 90 seconds' },
+  { id: 'collector', icon: '??', name: 'Book Worm', desc: 'Finish 3 different pictures' },
+  { id: 'rocket', icon: '??', name: 'Space Cadet', desc: 'Finish the Rocket' },
+  { id: 'fish', icon: '??', name: 'Ocean Buddy', desc: 'Finish the Fish' },
+  { id: 'house', icon: '??', name: 'Home Builder', desc: 'Finish the House' },
+  { id: 'butterfly', icon: '??', name: 'Wing Wonder', desc: 'Finish the Butterfly' },
+  { id: 'dino', icon: '??', name: 'Dino Tamer', desc: 'Finish the Dino' },
+  { id: 'icecream', icon: '??', name: 'Sweet Treat', desc: 'Finish the Ice Cream' },
+  { id: 'champion', icon: '??', name: 'Coloring Champion', desc: 'Finish every picture!' },
+];
+
+const CHEERS = ['Awesome!', 'So pretty!', 'Wow, great color!', 'You rock!', 'Beautiful!', 'Super job!', 'Keep going!', 'Magical!', 'Colorful!'];
+
+// ---------- State ----------
+const STORE_KEY = 'piercesColoringClub.v1';
+const saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+const state = {
+  color: COLORS[0].hex,
+  tool: 'fill',
+  picIndex: saved.picIndex || 0,
+  fills: saved.fills || {},          // { picId: { regionId: color } }
+  badges: saved.badges || {},        // { badgeId: true }
+  stars: saved.stars || 0,
+  totalFills: saved.totalFills || 0,
+  colorsTried: saved.colorsTried || {},
+  completed: saved.completed || {},  // { picId: true }
+  sound: saved.sound !== false,
+  history: [],
+  rainbowStep: 0,
+  picStart: Date.now(),
+};
+function save() {
+  const { color, tool, history, rainbowStep, picStart, ...persist } = state;
+  localStorage.setItem(STORE_KEY, JSON.stringify(persist));
+}
+
+// ---------- Sound ----------
+let audio;
+function beep(freqs, dur = 0.12, type = 'triangle') {
+  if (!state.sound) return;
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    freqs.forEach((f, i) => {
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = type; o.frequency.value = f;
+      const t = audio.currentTime + i * dur;
+      g.gain.setValueAtTime(0.18, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur * 1.4);
+      o.connect(g).connect(audio.destination);
+      o.start(t); o.stop(t + dur * 1.5);
+    });
+  } catch (e) {}
+}
+const sfx = {
+  pick: () => beep([660], .08, 'sine'),
+  fill: () => beep([523 + Math.random() * 200, 784], .07),
+  erase: () => beep([300, 200], .08, 'square'),
+  badge: () => beep([523, 659, 784, 1046], .12),
+  win: () => beep([523, 659, 784, 1046, 784, 1046, 1318], .13),
+};
+
+// ---------- Elements ----------
+const $ = (s) => document.querySelector(s);
+const svg = $('#picture');
+
+// ---------- Palette ----------
+function buildPalette() {
+  const pal = $('#palette');
+  COLORS.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.className = 'swatch';
+    b.style.background = c.hex;
+    b.title = c.name;
+    b.setAttribute('aria-label', c.name);
+    b.dataset.hex = c.hex;
+    if (i < 9) b.innerHTML = `<span class="key">${i + 1}</span>`;
+    b.onclick = () => selectColor(c.hex, c.name);
+    pal.appendChild(b);
+  });
+  updateCurrent();
+}
+function selectColor(hex, name) {
+  state.color = hex;
+  if (state.tool !== 'fill') setTool('fill');
+  sfx.pick();
+  say(`${name}! Now tap a spot.`);
+  updateCurrent();
+}
+function updateCurrent() {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('active', s.dataset.hex === state.color && state.tool === 'fill'));
+  const cur = $('#current');
+  if (state.tool === 'eraser') { cur.style.background = '#fff'; cur.textContent = '??'; }
+  else if (state.tool === 'rainbow') { cur.style.background = 'conic-gradient(#ff5e5e,#ff9f1c,#ffe66d,#2ec4b6,#4d96ff,#a66cff,#ff5e5e)'; cur.textContent = '??'; }
+  else { cur.style.background = state.color; cur.textContent = ''; }
+}
+
+// ---------- Tools ----------
+function setTool(t) {
+  state.tool = t;
+  document.querySelectorAll('.tool[data-tool]').forEach(b => b.classList.toggle('active', b.dataset.tool === t));
+  updateCurrent();
+  if (t === 'eraser') say('Eraser time! Tap a spot to clean it.');
+  if (t === 'rainbow') { say('Rainbow brush! Every tap is a new color!'); award('rainbowBrush'); }
+}
+document.querySelectorAll('.tool[data-tool]').forEach(b => b.onclick = () => { sfx.pick(); setTool(b.dataset.tool); });
+
+$('#undoBtn').onclick = () => {
+  const last = state.history.pop();
+  if (!last) { say('Nothing to undo!'); return; }
+  const pic = PICTURES[state.picIndex];
+  const map = state.fills[pic.id] || {};
+  if (last.prev) map[last.region] = last.prev; else delete map[last.region];
+  state.fills[pic.id] = map;
+  paintRegion(last.region, last.prev);
+  sfx.erase(); award('oopsFixer'); say('Undone!');
+  updateProgress(); save();
+};
+$('#clearBtn').onclick = () => {
+  const pic = PICTURES[state.picIndex];
+  if (!Object.keys(state.fills[pic.id] || {}).length) return;
+  if (!confirm('Start this picture over?')) return;
+  state.fills[pic.id] = {}; state.history = []; state.picStart = Date.now();
+  renderPicture(); save(); say('Fresh page! Let\u2019s go!');
+};
+$('#magicBtn').onclick = () => {
+  // Sparkle hint: wiggle an empty spot
+  const pic = PICTURES[state.picIndex];
+  const map = state.fills[pic.id] || {};
+  const empty = [...svg.querySelectorAll('.region')].filter(r => !map[r.dataset.r]);
+  if (!empty.length) { say('Everything is colored! ?'); return; }
+  const r = empty[Math.floor(Math.random() * empty.length)];
+  const prevStroke = r.style.stroke;
+  let n = 0;
+  const iv = setInterval(() => {
+    r.style.stroke = n % 2 ? '#2b2140' : '#ffc93c';
+    r.style.strokeWidth = n % 2 ? '' : '9';
+    if (++n > 7) { clearInterval(iv); r.style.stroke = prevStroke; r.style.strokeWidth = ''; }
+  }, 180);
+  beep([880, 1175, 1568], .08, 'sine');
+  say(`Psst! ${empty.length} spot${empty.length > 1 ? 's' : ''} left. Try the sparkly one!`);
+};
+
+// ---------- Pictures ----------
+function buildPictureList() {
+  const list = $('#pictureList');
+  list.querySelectorAll('.thumb').forEach(t => t.remove());
+  PICTURES.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.className = 'thumb' + (i === state.picIndex ? ' active' : '');
+    b.title = p.name;
+    b.innerHTML = `<svg viewBox="0 0 400 400">${p.svg}</svg>${state.completed[p.id] ? '<span class="done">?</span>' : ''}`;
+    const map = state.fills[p.id] || {};
+    b.querySelectorAll('.region').forEach(r => {
+      r.setAttribute('fill', map[r.dataset.r] || '#fff');
+      r.setAttribute('stroke', '#2b2140'); r.setAttribute('stroke-width', '6');
+    });
+    b.onclick = () => { state.picIndex = i; state.history = []; state.picStart = Date.now(); renderPicture(); buildPictureList(); save(); sfx.pick(); say(`Let\u2019s color the ${p.name}! ${p.emoji}`); };
+    list.appendChild(b);
+  });
+}
+function renderPicture() {
+  const pic = PICTURES[state.picIndex];
+  svg.innerHTML = pic.svg;
+  const map = state.fills[pic.id] || {};
+  svg.querySelectorAll('.region').forEach(r => {
+    r.setAttribute('fill', map[r.dataset.r] || '#ffffff');
+    r.addEventListener('pointerdown', (e) => { e.preventDefault(); onRegionTap(r); });
+  });
+  updateProgress();
+}
+function paintRegion(id, color) {
+  const el = svg.querySelector(`.region[data-r="${id}"]`);
+  if (!el) return;
+  el.setAttribute('fill', color || '#ffffff');
+  el.classList.remove('pop'); void el.getBoundingClientRect(); el.classList.add('pop');
+}
+function onRegionTap(el) {
+  const pic = PICTURES[state.picIndex];
+  const id = el.dataset.r;
+  const map = state.fills[pic.id] = state.fills[pic.id] || {};
+  const prev = map[id];
+  let color;
+  if (state.tool === 'eraser') {
+    if (!prev) return;
+    delete map[id]; paintRegion(id, null); sfx.erase(); award('oopsFixer');
+  } else {
+    color = state.tool === 'rainbow' ? RAINBOW[state.rainbowStep++ % RAINBOW.length] : state.color;
+    if (prev === color) return;
+    map[id] = color; paintRegion(id, color); sfx.fill();
+    if (!prev) { state.stars++; }
+    state.totalFills++;
+    state.colorsTried[color] = true;
+    sparkleAt(el);
+    if (Math.random() < .35) say(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
+  }
+  state.history.push({ region: id, prev });
+  if (state.history.length > 100) state.history.shift();
+  checkBadges();
+  updateProgress();
+  save();
+}
+function updateProgress() {
+  const pic = PICTURES[state.picIndex];
+  const total = svg.querySelectorAll('.region').length;
+  const done = Object.keys(state.fills[pic.id] || {}).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  $('#progressBar').style.width = pct + '%';
+  $('#progressLabel').textContent = `${pic.emoji} ${pic.name}: ${done}/${total} spots`;
+  $('#stars').textContent = state.stars;
+  if (done === total && !state.completed[pic.id] && total > 0) completePicture(pic);
+}
+function completePicture(pic) {
+  state.completed[pic.id] = true;
+  state.stars += 10;
+  const secs = (Date.now() - state.picStart) / 1000;
+  award('finisher');
+  award(pic.id);
+  if (secs < 90) award('speedy');
+  if (Object.keys(state.completed).length >= 3) award('collector');
+  if (PICTURES.every(p => state.completed[p.id])) award('champion');
+  save(); buildPictureList();
+  setTimeout(() => {
+    sfx.win(); confetti(220);
+    const b = BADGES.find(b => b.id === pic.id);
+    $('#winIcon').textContent = b.icon;
+    $('#winTitle').textContent = `${b.name} Badge!`;
+    $('#winText').textContent = `You finished the ${pic.name}! +10 ?`;
+    $('#winModal').classList.add('show');
+  }, 450);
+}
+$('#nextPicBtn').onclick = () => {
+  $('#winModal').classList.remove('show');
+  const next = PICTURES.findIndex(p => !state.completed[p.id]);
+  state.picIndex = next >= 0 ? next : (state.picIndex + 1) % PICTURES.length;
+  state.history = []; state.picStart = Date.now();
+  renderPicture(); buildPictureList(); save();
+  say(`New picture: ${PICTURES[state.picIndex].name}! ${PICTURES[state.picIndex].emoji}`);
+};
+
+// ---------- Badges ----------
+function checkBadges() {
+  if (state.totalFills >= 1) award('firstSplash');
+  if (state.totalFills >= 25) award('paintParty');
+  if (state.totalFills >= 100) award('colorWizard');
+  const pic = PICTURES[state.picIndex];
+  const used = new Set(Object.values(state.fills[pic.id] || {}));
+  if (used.size >= 6) award('rainbowMaker');
+  if (COLORS.every(c => state.colorsTried[c.hex])) award('explorer');
+}
+const toastQueue = [];
+let toastBusy = false;
+function award(id) {
+  if (state.badges[id]) return;
+  state.badges[id] = true;
+  state.stars += 5;
+  save(); updateBadgeCount();
+  const b = BADGES.find(b => b.id === id);
+  toastQueue.push(b); runToasts();
+}
+function runToasts() {
+  if (toastBusy || !toastQueue.length) return;
+  toastBusy = true;
+  const b = toastQueue.shift();
+  $('#toastIcon').textContent = b.icon;
+  $('#toastText').textContent = b.name + '  +5 ?';
+  $('#toast').classList.add('show');
+  sfx.badge(); confetti(60);
+  $('#stars').textContent = state.stars;
+  setTimeout(() => { $('#toast').classList.remove('show'); setTimeout(() => { toastBusy = false; runToasts(); }, 400); }, 2200);
+}
+function updateBadgeCount() {
+  $('#badgeCount').textContent = Object.keys(state.badges).length;
+  $('#badgeTotal').textContent = BADGES.length;
+}
+function renderBadgeShelf() {
+  const grid = $('#badgeGrid');
+  grid.innerHTML = BADGES.map(b => `
+    <div class="badge ${state.badges[b.id] ? 'earned' : ''}">
+      <div class="medal">${state.badges[b.id] ? b.icon : '??'}</div>
+      <div class="name">${b.name}</div>
+      <div class="desc">${b.desc}</div>
+    </div>`).join('');
+  const n = Object.keys(state.badges).length;
+  $('#badgeSummary').innerHTML = `<b style="font-size:18px">${n} of ${BADGES.length} badges ? ${state.stars} ?</b>`;
+}
+$('#openBadges').onclick = () => { renderBadgeShelf(); $('#badgeModal').classList.add('show'); sfx.pick(); };
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.modal').classList.remove('show'));
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); }));
+
+// ---------- Mascot ----------
+let sayTimer;
+function say(text) {
+  const b = $('#bubble');
+  b.textContent = text; b.style.display = 'block';
+  clearTimeout(sayTimer);
+  sayTimer = setTimeout(() => b.style.display = 'none', 3200);
+}
+
+// ---------- Confetti & sparkles ----------
+const cv = $('#confetti'), cx = cv.getContext('2d');
+let parts = [];
+function resize() { cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener('resize', resize); resize();
+function confetti(n, x = innerWidth / 2, y = innerHeight / 3) {
+  for (let i = 0; i < n; i++) parts.push({
+    x, y, vx: (Math.random() - .5) * 16, vy: Math.random() * -14 - 2,
+    c: RAINBOW[i % RAINBOW.length], s: 6 + Math.random() * 8, r: Math.random() * 6, life: 120,
+  });
+}
+function sparkleAt(el) {
+  const b = el.getBoundingClientRect();
+  const x = b.left + b.width / 2, y = b.top + b.height / 2;
+  for (let i = 0; i < 14; i++) parts.push({
+    x, y, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8,
+    c: state.tool === 'rainbow' ? RAINBOW[i % RAINBOW.length] : state.color, s: 5 + Math.random() * 5, r: 0, life: 40, star: true,
+  });
+}
+(function loop() {
+  cx.clearRect(0, 0, cv.width, cv.height);
+  parts = parts.filter(p => p.life-- > 0);
+  parts.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += p.star ? .1 : .35; p.r += .1;
+    cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r);
+    cx.globalAlpha = Math.min(1, p.life / 30);
+    cx.fillStyle = p.c; cx.strokeStyle = '#2b214055';
+    if (p.star) { cx.beginPath(); for (let k = 0; k < 5; k++) { cx.lineTo(Math.cos((18 + k * 72) * Math.PI / 180) * p.s, -Math.sin((18 + k * 72) * Math.PI / 180) * p.s); cx.lineTo(Math.cos((54 + k * 72) * Math.PI / 180) * p.s / 2, -Math.sin((54 + k * 72) * Math.PI / 180) * p.s / 2); } cx.closePath(); cx.fill(); cx.stroke(); }
+    else cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
+    cx.restore();
+  });
+  requestAnimationFrame(loop);
+})();
+
+// ---------- Keyboard ----------
+addEventListener('keydown', e => {
+  const n = parseInt(e.key, 10);
+  if (n >= 1 && n <= 9) { const c = COLORS[n - 1]; selectColor(c.hex, c.name); }
+  if (e.key === 'e') setTool('eraser');
+  if (e.key === 'r') setTool('rainbow');
+  if (e.key === 'f') setTool('fill');
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') $('#undoBtn').click();
+});
+
+// ---------- Sound toggle ----------
+function updateSoundBtn() { $('#soundBtn').textContent = state.sound ? '??' : '??'; }
+$('#soundBtn').onclick = () => { state.sound = !state.sound; updateSoundBtn(); save(); sfx.pick(); };
+
+// ---------- Init ----------
+buildPalette();
+buildPictureList();
+renderPicture();
+updateBadgeCount();
+updateSoundBtn();
+say('Hi! I\u2019m Sparkle ?? Pick a color, then tap the picture!');
+</script>
+</body>
+</html>
