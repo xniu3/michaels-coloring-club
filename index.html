@@ -110,12 +110,12 @@
 <body>
 <div class="app">
   <header>
-    <div class="logo"><span>Michael's</span> <span>Coloring</span> <span>Club</span> <span>??</span></div>
+    <div class="logo"><span>Michael's</span> <span>Coloring</span> <span>Club</span> <span>🎨</span></div>
     <div class="spacer"></div>
-    <div class="pill" title="Stars">? <span id="stars">0</span></div>
-    <div class="pill" title="Badges">?? <span id="badgeCount">0</span>/<span id="badgeTotal">0</span></div>
-    <button class="btn gold" id="openBadges">?? Badges</button>
-    <button class="btn pink" id="soundBtn" aria-label="Toggle sound">??</button>
+    <div class="pill" title="Stars">⭐ <span id="stars">0</span></div>
+    <div class="pill" title="Badges">🏅 <span id="badgeCount">0</span>/<span id="badgeTotal">0</span></div>
+    <button class="btn gold" id="openBadges">🏆 Badges</button>
+    <button class="btn pink" id="soundBtn" aria-label="Toggle sound">🔊</button>
   </header>
 
   <main>
@@ -125,16 +125,16 @@
       <div class="progress-label" id="progressLabel">0%</div>
       <svg id="picture" viewBox="0 0 400 400" aria-label="Coloring picture"></svg>
       <div class="bubble" id="bubble">Pick a color, then tap the picture!</div>
-      <div class="mascot" id="mascot">??</div>
+      <div class="mascot" id="mascot">🦄</div>
     </section>
     <aside class="side">
       <h3>Tools</h3>
-      <button class="tool active" data-tool="fill"><span class="ic">??</span>Fill</button>
-      <button class="tool" data-tool="rainbow"><span class="ic">??</span>Rainbow</button>
-      <button class="tool" data-tool="eraser"><span class="ic">??</span>Eraser</button>
-      <button class="tool" id="undoBtn"><span class="ic">??</span>Undo</button>
-      <button class="tool" id="magicBtn"><span class="ic">?</span>Magic</button>
-      <button class="tool" id="clearBtn"><span class="ic">???</span>Start Over</button>
+      <button class="tool active" data-tool="fill"><span class="ic">🪣</span>Fill</button>
+      <button class="tool" data-tool="rainbow"><span class="ic">🌈</span>Rainbow</button>
+      <button class="tool" data-tool="eraser"><span class="ic">🧽</span>Eraser</button>
+      <button class="tool" id="undoBtn"><span class="ic">↩️</span>Undo</button>
+      <button class="tool" id="magicBtn"><span class="ic">✨</span>Magic</button>
+      <button class="tool" id="clearBtn"><span class="ic">🗑️</span>Start Over</button>
     </aside>
   </main>
 
@@ -146,7 +146,7 @@
 
 <div class="modal" id="badgeModal">
   <div class="card">
-    <h2>?? My Badge Shelf</h2>
+    <h2>🏆 My Badge Shelf</h2>
     <div id="badgeSummary"></div>
     <div class="badges" id="badgeGrid"></div>
     <button class="btn" data-close>Keep Coloring!</button>
@@ -155,15 +155,15 @@
 
 <div class="modal" id="winModal">
   <div class="card">
-    <div class="bigBadge" id="winIcon">??</div>
+    <div class="bigBadge" id="winIcon">🏅</div>
     <h2 id="winTitle">You did it!</h2>
     <p id="winText" style="font-size:18px;font-weight:900"></p>
-    <button class="btn pink" id="nextPicBtn">Next Picture ??</button>
+    <button class="btn pink" id="nextPicBtn">Next Picture ➡️</button>
     <button class="btn" data-close>Admire My Art</button>
   </div>
 </div>
 
-<div class="toast" id="toast"><span class="medal" id="toastIcon">??</span><div><div style="font-size:13px;color:#a08c3c">NEW BADGE!</div><div id="toastText"></div></div></div>
+<div class="toast" id="toast"><span class="medal" id="toastIcon">🏅</span><div><div style="font-size:13px;color:#a08c3c">NEW BADGE!</div><div id="toastText"></div></div></div>
 <canvas id="confetti"></canvas>
 
 <script>
@@ -186,7 +186,7 @@ const RAINBOW = ['#ff5e5e','#ff9f1c','#ffe66d','#8ac926','#2ec4b6','#4d96ff','#a
 
 // Each picture: regions are tappable; decor is line-art on top.
 const PICTURES = [
-  { id: 'rocket', name: 'Rocket', emoji: '??', svg: `
+  { id: 'rocket', name: 'Rocket', emoji: '🚀', svg: `
     <rect class="region" data-r="sky" x="4" y="4" width="392" height="392" rx="20"/>
     <circle class="region" data-r="planet" cx="320" cy="90" r="45"/>
     <ellipse class="region" data-r="ring" cx="320" cy="90" rx="70" ry="14" fill-rule="evenodd"/>
@@ -200,7 +200,7 @@ const PICTURES = [
     <circle class="region" data-r="window" cx="200" cy="185" r="26"/>
     <rect class="region" data-r="stripe" x="165" y="250" width="70" height="18"/>
   `},
-  { id: 'fish', name: 'Fish', emoji: '??', svg: `
+  { id: 'fish', name: 'Fish', emoji: '🐠', svg: `
     <rect class="region" data-r="water" x="4" y="4" width="392" height="392" rx="20"/>
     <path class="region" data-r="sand" d="M4 330 Q100 300 200 330 T396 325 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
     <path class="region" data-r="weed1" d="M50 335 Q30 280 60 240 Q80 280 70 335 Z"/>
@@ -216,7 +216,7 @@ const PICTURES = [
     <circle class="region" data-r="bub3" cx="100" cy="40" r="7"/>
     <g class="decor"><circle cx="135" cy="175" r="6" fill="#2b2140"/><path d="M105 205 Q115 215 125 208" stroke="#2b2140" stroke-width="4" fill="none" stroke-linecap="round"/></g>
   `},
-  { id: 'house', name: 'House', emoji: '??', svg: `
+  { id: 'house', name: 'House', emoji: '🏡', svg: `
     <rect class="region" data-r="sky" x="4" y="4" width="392" height="300" rx="20"/>
     <path class="region" data-r="grass" d="M4 290 L396 290 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
     <circle class="region" data-r="sun" cx="330" cy="70" r="38"/>
@@ -232,7 +232,7 @@ const PICTURES = [
     <path class="region" data-r="path" d="M160 300 L200 300 L230 396 L130 396 Z"/>
     <g class="decor"><circle cx="192" cy="268" r="4" fill="#2b2140"/><line x1="134" y1="200" x2="134" y2="232" stroke="#2b2140" stroke-width="3"/><line x1="118" y1="216" x2="150" y2="216" stroke="#2b2140" stroke-width="3"/><line x1="226" y1="200" x2="226" y2="232" stroke="#2b2140" stroke-width="3"/><line x1="210" y1="216" x2="242" y2="216" stroke="#2b2140" stroke-width="3"/></g>
   `},
-  { id: 'butterfly', name: 'Butterfly', emoji: '??', svg: `
+  { id: 'butterfly', name: 'Butterfly', emoji: '🦋', svg: `
     <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
     <path class="region" data-r="wingTL" d="M195 180 Q120 40 50 90 Q20 170 195 200 Z"/>
     <path class="region" data-r="wingTR" d="M205 180 Q280 40 350 90 Q380 170 205 200 Z"/>
@@ -246,7 +246,7 @@ const PICTURES = [
     <circle class="region" data-r="head" cx="200" cy="125" r="18"/>
     <g class="decor" fill="none" stroke="#2b2140" stroke-width="4" stroke-linecap="round"><path d="M193 110 Q180 70 165 60"/><path d="M207 110 Q220 70 235 60"/><circle cx="165" cy="58" r="5" fill="#2b2140"/><circle cx="235" cy="58" r="5" fill="#2b2140"/><circle cx="194" cy="122" r="2.5" fill="#2b2140"/><circle cx="206" cy="122" r="2.5" fill="#2b2140"/><path d="M194 132 Q200 137 206 132"/></g>
   `},
-  { id: 'dino', name: 'Dino', emoji: '??', svg: `
+  { id: 'dino', name: 'Dino', emoji: '🦕', svg: `
     <rect class="region" data-r="sky" x="4" y="4" width="392" height="310" rx="20"/>
     <path class="region" data-r="ground" d="M4 300 L396 300 L396 376 Q396 396 376 396 L24 396 Q4 396 4 376 Z"/>
     <polygon class="region" data-r="volcano" points="280,300 330,150 360,150 396,260 396,300"/>
@@ -261,7 +261,7 @@ const PICTURES = [
     <circle class="region" data-r="egg" cx="60" cy="285" r="18"/>
     <g class="decor"><circle cx="105" cy="115" r="5" fill="#2b2140"/><path d="M85 135 Q95 140 105 135" stroke="#2b2140" stroke-width="3" fill="none" stroke-linecap="round"/></g>
   `},
-  { id: 'icecream', name: 'Ice Cream', emoji: '??', svg: `
+  { id: 'icecream', name: 'Ice Cream', emoji: '🍦', svg: `
     <rect class="region" data-r="bg" x="4" y="4" width="392" height="392" rx="20"/>
     <polygon class="region" data-r="cone" points="140,215 260,215 200,380"/>
     <circle class="region" data-r="scoop1" cx="160" cy="200" r="45"/>
@@ -279,23 +279,23 @@ const PICTURES = [
 ];
 
 const BADGES = [
-  { id: 'firstSplash', icon: '??', name: 'First Splash', desc: 'Color your very first spot' },
-  { id: 'paintParty', icon: '??', name: 'Paint Party', desc: 'Fill 25 spots' },
-  { id: 'colorWizard', icon: '??', name: 'Color Wizard', desc: 'Fill 100 spots' },
-  { id: 'rainbowMaker', icon: '??', name: 'Rainbow Maker', desc: 'Use 6 colors on one picture' },
-  { id: 'explorer', icon: '??', name: 'Color Explorer', desc: 'Try every crayon in the box' },
-  { id: 'rainbowBrush', icon: '??', name: 'Unicorn Brush', desc: 'Use the Rainbow tool' },
-  { id: 'oopsFixer', icon: '??', name: 'Oops Fixer', desc: 'Use the Eraser or Undo' },
-  { id: 'finisher', icon: '???', name: 'Artist', desc: 'Finish a whole picture' },
-  { id: 'speedy', icon: '?', name: 'Speedy Painter', desc: 'Finish a picture in under 90 seconds' },
-  { id: 'collector', icon: '??', name: 'Book Worm', desc: 'Finish 3 different pictures' },
-  { id: 'rocket', icon: '??', name: 'Space Cadet', desc: 'Finish the Rocket' },
-  { id: 'fish', icon: '??', name: 'Ocean Buddy', desc: 'Finish the Fish' },
-  { id: 'house', icon: '??', name: 'Home Builder', desc: 'Finish the House' },
-  { id: 'butterfly', icon: '??', name: 'Wing Wonder', desc: 'Finish the Butterfly' },
-  { id: 'dino', icon: '??', name: 'Dino Tamer', desc: 'Finish the Dino' },
-  { id: 'icecream', icon: '??', name: 'Sweet Treat', desc: 'Finish the Ice Cream' },
-  { id: 'champion', icon: '??', name: 'Coloring Champion', desc: 'Finish every picture!' },
+  { id: 'firstSplash', icon: '💦', name: 'First Splash', desc: 'Color your very first spot' },
+  { id: 'paintParty', icon: '🎉', name: 'Paint Party', desc: 'Fill 25 spots' },
+  { id: 'colorWizard', icon: '🧙', name: 'Color Wizard', desc: 'Fill 100 spots' },
+  { id: 'rainbowMaker', icon: '🌈', name: 'Rainbow Maker', desc: 'Use 6 colors on one picture' },
+  { id: 'explorer', icon: '🧭', name: 'Color Explorer', desc: 'Try every crayon in the box' },
+  { id: 'rainbowBrush', icon: '🦄', name: 'Unicorn Brush', desc: 'Use the Rainbow tool' },
+  { id: 'oopsFixer', icon: '🧽', name: 'Oops Fixer', desc: 'Use the Eraser or Undo' },
+  { id: 'finisher', icon: '🖼️', name: 'Artist', desc: 'Finish a whole picture' },
+  { id: 'speedy', icon: '⚡', name: 'Speedy Painter', desc: 'Finish a picture in under 90 seconds' },
+  { id: 'collector', icon: '📚', name: 'Book Worm', desc: 'Finish 3 different pictures' },
+  { id: 'rocket', icon: '🚀', name: 'Space Cadet', desc: 'Finish the Rocket' },
+  { id: 'fish', icon: '🐠', name: 'Ocean Buddy', desc: 'Finish the Fish' },
+  { id: 'house', icon: '🏡', name: 'Home Builder', desc: 'Finish the House' },
+  { id: 'butterfly', icon: '🦋', name: 'Wing Wonder', desc: 'Finish the Butterfly' },
+  { id: 'dino', icon: '🦖', name: 'Dino Tamer', desc: 'Finish the Dino' },
+  { id: 'icecream', icon: '🍦', name: 'Sweet Treat', desc: 'Finish the Ice Cream' },
+  { id: 'champion', icon: '👑', name: 'Coloring Champion', desc: 'Finish every picture!' },
 ];
 
 const CHEERS = ['Awesome!', 'So pretty!', 'Wow, great color!', 'You rock!', 'Beautiful!', 'Super job!', 'Keep going!', 'Magical!', 'Colorful!'];
@@ -378,8 +378,8 @@ function selectColor(hex, name) {
 function updateCurrent() {
   document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('active', s.dataset.hex === state.color && state.tool === 'fill'));
   const cur = $('#current');
-  if (state.tool === 'eraser') { cur.style.background = '#fff'; cur.textContent = '??'; }
-  else if (state.tool === 'rainbow') { cur.style.background = 'conic-gradient(#ff5e5e,#ff9f1c,#ffe66d,#2ec4b6,#4d96ff,#a66cff,#ff5e5e)'; cur.textContent = '??'; }
+  if (state.tool === 'eraser') { cur.style.background = '#fff'; cur.textContent = '🧽'; }
+  else if (state.tool === 'rainbow') { cur.style.background = 'conic-gradient(#ff5e5e,#ff9f1c,#ffe66d,#2ec4b6,#4d96ff,#a66cff,#ff5e5e)'; cur.textContent = '🌈'; }
   else { cur.style.background = state.color; cur.textContent = ''; }
 }
 
@@ -416,7 +416,7 @@ $('#magicBtn').onclick = () => {
   const pic = PICTURES[state.picIndex];
   const map = state.fills[pic.id] || {};
   const empty = [...svg.querySelectorAll('.region')].filter(r => !map[r.dataset.r]);
-  if (!empty.length) { say('Everything is colored! ?'); return; }
+  if (!empty.length) { say('Everything is colored! ✨'); return; }
   const r = empty[Math.floor(Math.random() * empty.length)];
   const prevStroke = r.style.stroke;
   let n = 0;
@@ -437,7 +437,7 @@ function buildPictureList() {
     const b = document.createElement('button');
     b.className = 'thumb' + (i === state.picIndex ? ' active' : '');
     b.title = p.name;
-    b.innerHTML = `<svg viewBox="0 0 400 400">${p.svg}</svg>${state.completed[p.id] ? '<span class="done">?</span>' : ''}`;
+    b.innerHTML = `<svg viewBox="0 0 400 400">${p.svg}</svg>${state.completed[p.id] ? '<span class="done">⭐</span>' : ''}`;
     const map = state.fills[p.id] || {};
     b.querySelectorAll('.region').forEach(r => {
       r.setAttribute('fill', map[r.dataset.r] || '#fff');
@@ -513,7 +513,7 @@ function completePicture(pic) {
     const b = BADGES.find(b => b.id === pic.id);
     $('#winIcon').textContent = b.icon;
     $('#winTitle').textContent = `${b.name} Badge!`;
-    $('#winText').textContent = `You finished the ${pic.name}! +10 ?`;
+    $('#winText').textContent = `You finished the ${pic.name}! +10 ⭐`;
     $('#winModal').classList.add('show');
   }, 450);
 }
@@ -551,7 +551,7 @@ function runToasts() {
   toastBusy = true;
   const b = toastQueue.shift();
   $('#toastIcon').textContent = b.icon;
-  $('#toastText').textContent = b.name + '  +5 ?';
+  $('#toastText').textContent = b.name + '  +5 ⭐';
   $('#toast').classList.add('show');
   sfx.badge(); confetti(60);
   $('#stars').textContent = state.stars;
@@ -565,12 +565,12 @@ function renderBadgeShelf() {
   const grid = $('#badgeGrid');
   grid.innerHTML = BADGES.map(b => `
     <div class="badge ${state.badges[b.id] ? 'earned' : ''}">
-      <div class="medal">${state.badges[b.id] ? b.icon : '??'}</div>
+      <div class="medal">${state.badges[b.id] ? b.icon : '🔒'}</div>
       <div class="name">${b.name}</div>
       <div class="desc">${b.desc}</div>
     </div>`).join('');
   const n = Object.keys(state.badges).length;
-  $('#badgeSummary').innerHTML = `<b style="font-size:18px">${n} of ${BADGES.length} badges ? ${state.stars} ?</b>`;
+  $('#badgeSummary').innerHTML = `<b style="font-size:18px">${n} of ${BADGES.length} badges • ${state.stars} ⭐</b>`;
 }
 $('#openBadges').onclick = () => { renderBadgeShelf(); $('#badgeModal').classList.add('show'); sfx.pick(); };
 document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.modal').classList.remove('show'));
@@ -630,7 +630,7 @@ addEventListener('keydown', e => {
 });
 
 // ---------- Sound toggle ----------
-function updateSoundBtn() { $('#soundBtn').textContent = state.sound ? '??' : '??'; }
+function updateSoundBtn() { $('#soundBtn').textContent = state.sound ? '🔊' : '🔇'; }
 $('#soundBtn').onclick = () => { state.sound = !state.sound; updateSoundBtn(); save(); sfx.pick(); };
 
 // ---------- Init ----------
@@ -639,7 +639,7 @@ buildPictureList();
 renderPicture();
 updateBadgeCount();
 updateSoundBtn();
-say('Hi! I\u2019m Sparkle ?? Pick a color, then tap the picture!');
+say('Hi! I\u2019m Sparkle 🦄 Pick a color, then tap the picture!');
 </script>
 </body>
 </html>
