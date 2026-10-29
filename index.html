@@ -69,7 +69,10 @@
   /* Palette */
   footer { background: var(--panel); border-radius: 22px; padding: 10px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #0001; }
   .current { width: 70px; height: 70px; border-radius: 50%; border: 5px solid var(--ink); flex: none; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: inset 0 -6px 0 #0002; }
-  .palette { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; justify-content: center; }
+  .palette { display: grid; grid-template-columns: repeat(12, 36px); gap: 8px 10px; flex: 1; justify-content: center; align-content: center; padding: 6px 4px 14px; }
+  .palette .swatch { width: 36px; height: 36px; border-width: 3px; box-shadow: 0 0 0 2px #ddd, inset 0 -4px 0 #0002; }
+  .palette .swatch.active { box-shadow: 0 0 0 3px var(--ink), inset 0 -4px 0 #0002; }
+  .palette .swatch .key { bottom: -15px; font-size: 10px; }
   .swatch { width: 54px; height: 54px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 0 3px #ddd, inset 0 -6px 0 #0002; cursor: pointer; transition: transform .12s; position: relative; }
   .swatch:hover { transform: scale(1.1); }
   .swatch.active { transform: scale(1.22); box-shadow: 0 0 0 4px var(--ink), inset 0 -6px 0 #0002; z-index: 1; }
@@ -102,7 +105,9 @@
     .side { flex-direction: row; overflow-x: auto; padding: 6px; }
     .side h3 { display: none; }
     .tool, .thumb { width: 64px; height: 60px; flex: none; }
-    .swatch { width: 40px; height: 40px; }
+    .palette { grid-template-columns: repeat(8, 30px); gap: 7px; padding: 4px; }
+    .palette .swatch { width: 30px; height: 30px; }
+    .palette .swatch .key { display: none; }
     .current { width: 50px; height: 50px; }
   }
 </style>
@@ -181,6 +186,42 @@ const COLORS = [
   { name: 'Chocolate', hex: '#8d5a3b' },
   { name: 'Cloud White', hex: '#ffffff' },
   { name: 'Night Black', hex: '#3a3a4a' },
+  { name: 'Strawberry', hex: '#e63946' },
+  { name: 'Watermelon', hex: '#ff6b81' },
+  { name: 'Coral', hex: '#ff7f50' },
+  { name: 'Peach', hex: '#ffb38a' },
+  { name: 'Tangerine', hex: '#f77f00' },
+  { name: 'Pumpkin', hex: '#e85d04' },
+  { name: 'Lemon', hex: '#fff176' },
+  { name: 'Butter', hex: '#fff3b0' },
+  { name: 'Gold', hex: '#f4c430' },
+  { name: 'Mustard', hex: '#d4a017' },
+  { name: 'Mint', hex: '#98f5c9' },
+  { name: 'Pistachio', hex: '#b5e48c' },
+  { name: 'Grass Green', hex: '#52b788' },
+  { name: 'Jungle Green', hex: '#1b7f5a' },
+  { name: 'Olive', hex: '#808000' },
+  { name: 'Aqua', hex: '#7fdbff' },
+  { name: 'Turquoise', hex: '#00b4d8' },
+  { name: 'Baby Blue', hex: '#a9d6ff' },
+  { name: 'Royal Blue', hex: '#2b59c3' },
+  { name: 'Navy', hex: '#1d3557' },
+  { name: 'Lavender', hex: '#cdb4ff' },
+  { name: 'Lilac', hex: '#c8a2c8' },
+  { name: 'Violet', hex: '#7b2cbf' },
+  { name: 'Plum', hex: '#6a1b4d' },
+  { name: 'Cotton Candy', hex: '#ffc8dd' },
+  { name: 'Rose', hex: '#f472b6' },
+  { name: 'Hot Pink', hex: '#ff1493' },
+  { name: 'Magenta', hex: '#d63384' },
+  { name: 'Tan', hex: '#d2b48c' },
+  { name: 'Caramel', hex: '#c68642' },
+  { name: 'Cocoa', hex: '#5c3a21' },
+  { name: 'Peachy Skin', hex: '#f9d5bb' },
+  { name: 'Silver', hex: '#c0c0c8' },
+  { name: 'Stone Gray', hex: '#8a8a99' },
+  { name: 'Charcoal', hex: '#55556a' },
+  { name: 'Cream', hex: '#fffdd0' },
 ];
 const RAINBOW = ['#ff5e5e','#ff9f1c','#ffe66d','#8ac926','#2ec4b6','#4d96ff','#a66cff','#ff8fc7'];
 
@@ -255,7 +296,7 @@ const BADGES = [
   { id: 'paintParty', icon: '🎉', name: 'Paint Party', desc: 'Fill 25 spots' },
   { id: 'colorWizard', icon: '🧙', name: 'Color Wizard', desc: 'Fill 100 spots' },
   { id: 'rainbowMaker', icon: '🌈', name: 'Rainbow Maker', desc: 'Use 6 colors on one picture' },
-  { id: 'explorer', icon: '🧭', name: 'Color Explorer', desc: 'Try every crayon in the box' },
+  { id: 'explorer', icon: '🧭', name: 'Color Explorer', desc: 'Try all 48 crayons in the box' },
   { id: 'rainbowBrush', icon: '🦄', name: 'Unicorn Brush', desc: 'Use the Rainbow tool' },
   { id: 'oopsFixer', icon: '🧽', name: 'Oops Fixer', desc: 'Use the Eraser or Undo' },
   { id: 'finisher', icon: '🖼️', name: 'Artist', desc: 'Finish a whole picture' },

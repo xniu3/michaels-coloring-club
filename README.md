@@ -1,6 +1,6 @@
 # Michael's Coloring Club
 
-A kids' coloring and badge game featuring three Hello Kitty pictures: Hello Kitty, Kitty Overalls and Kitty Heart.
+A kids' coloring and badge game featuring three Hello Kitty pictures: Hello Kitty, Kitty Overalls and Kitty Heart, with a 48-color crayon box.
 
 The Hello Kitty pages are black-and-white versions of supplied pictures (`hello-kitty-lineart.png`, `hello-kitty-2-lineart.png`, `hello-kitty-3-lineart.png`); their colorable areas are traced into the page.
 
